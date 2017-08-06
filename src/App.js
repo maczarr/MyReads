@@ -7,17 +7,37 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    books : []
+    books : [],
+    shelfs : {
+      "currentlyReading": [],
+      "wantToRead"      : [],
+      "read"            : []
+    }
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
+      this.setState({
+        shelfs : {
+          "currentlyReading": books.filter((book) => book.shelf === 'currentlyReading').map((book) => book.id),
+          "wantToRead"      : books.filter((book) => book.shelf === 'wantToRead').map((book) => book.id),
+          "read"            : books.filter((book) => book.shelf === 'read').map((book) => book.id)
+        }
+      })
     })
   }
 
   switchShelf(book,shelf) {
-    BooksAPI.update(book,shelf)
+    BooksAPI.update(book,shelf).then((shelfs) => {
+      this.setState({ shelfs })
+
+      if(shelf === 'none') {
+        this.setState((state) => ({
+          books: state.books.filter((b) => b.id !== book.id)
+        }))
+      }
+    })
   }
 
   render() {
@@ -29,6 +49,7 @@ class BooksApp extends React.Component {
               this.switchShelf(book,shelf)
             }}
             books={this.state.books}
+            shelfs={this.state.shelfs}
           />
         )}/>
 
