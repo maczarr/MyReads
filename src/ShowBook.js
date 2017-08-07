@@ -1,22 +1,25 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class ShowBook extends Component {
-  render() {
-    const { book } = this.props
+  static propTypes = {
+    book: PropTypes.object.isRequired,
+    shelf: PropTypes.string.isRequired
+  }
 
-    handleChange = (e) => {
-      const value = e.target;
-      console.log(value);
-      if(this.props.onBookToShelf)
-        this.props.onBookToShelf(book,value)
-    }
+  handleChange = (book,shelf) => {
+    this.props.onHandleChange(book,shelf)
+  }
+
+  render() {
+    const { book, shelf } = this.props
 
     return (
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
           <div className="book-shelf-changer">
-            <select onChange={this.handleChange}>
+            <select value={shelf} onChange={(event) => this.handleChange(book,event.target.value)}>
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -26,7 +29,7 @@ class ShowBook extends Component {
           </div>
         </div>
         <div className="book-title">{book.title}</div>
-        <div className="book-authors">{book.authors[0]}</div>
+        <div className="book-authors">{book.authors.join(', ')}</div>
       </div>
     )
   }
