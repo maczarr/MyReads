@@ -36,6 +36,14 @@ class BooksApp extends React.Component {
         this.setState((state) => ({
           books: state.books.filter((b) => b.id !== book.id)
         }))
+      } else {
+        const bookInLib = this.state.books.filter((b) => { return (b.id === book.id) })
+
+        if(bookInLib.length === 0) {
+          this.setState((state) => ({
+            books: state.books.concat([ book ])
+          }))
+        }
       }
     })
   }
@@ -53,8 +61,13 @@ class BooksApp extends React.Component {
           />
         )}/>
 
-        <Route exact path="/search" render={({ history }) => (
-          <SearchBooks />
+        <Route exact path="/search" render={() => (
+          <SearchBooks
+            onSwitchShelf={(book,shelf) => {
+              this.switchShelf(book,shelf)
+            }}
+            shelfs={this.state.shelfs}
+          />
         )}/>
       </div>
     )

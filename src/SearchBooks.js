@@ -1,27 +1,79 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import ShowBook from './ShowBook'
+import * as BooksAPI from './BooksAPI'
+import sortBy from 'sort-by'
 
 class SearchBooks extends Component {
+  static propTypes = {
+    onSwitchShelf: PropTypes.func.isRequired,
+    shelfs: PropTypes.object.isRequired
+  }
+
+  state = {
+    listOfBooks: []
+  }
+
+  handleChange = (book,shelf) => {
+    this.props.onSwitchShelf(book,shelf)
+  }
+
+  clearBookList() {
+    this.setState({ listOfBooks: [] })
+  }
+
+  handleSearch = (query) => {
+    if(query.length > 0) {
+      BooksAPI.search(query,20).then((listOfBooks) => {
+        if(!listOfBooks.error) {
+          this.setState({ listOfBooks })
+        }
+        else {
+          this.clearBookList();
+        }
+      })
+    }
+    else {
+      this.clearBookList();
+    }
+  }
+
   render() {
+    const { listOfBooks } = this.state
+    const { shelfs } = this.props
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
-            <input type="text" placeholder="Search by title or author"/>
-
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              onChange={(event) => this.handleSearch(event.target.value)}
+            />
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            {listOfBooks.sort(sortBy('title')).map((book) => (
+              <li key={book.id}>
+                <ShowBook
+                  onHandleChange={(book,shelf) => {
+                    this.handleChange(book,shelf)
+                  }}
+                  book={book}
+                  shelf={((book) => {
+                    if(shelfs.currentlyReading.indexOf(book.id) > -1) return 'currentlyReading'
+                    if(shelfs.wantToRead.indexOf(book.id) > -1) return 'wantToRead'
+                    if(shelfs.read.indexOf(book.id) > -1) return 'read'
+                    return 'none'
+                  })(book)}
+                />
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     )

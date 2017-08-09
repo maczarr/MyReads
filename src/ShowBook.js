@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 class ShowBook extends Component {
   static propTypes = {
+    onHandleChange: PropTypes.func.isRequired,
     book: PropTypes.object.isRequired,
     shelf: PropTypes.string.isRequired
   }
@@ -14,10 +15,13 @@ class ShowBook extends Component {
   render() {
     const { book, shelf } = this.props
 
+    const bookImage = book.imageLinks ? book.imageLinks.thumbnail : ''
+    const authors   = book.authors ? book.authors.join(', ') : ''
+
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${bookImage})` }}></div>
           <div className="book-shelf-changer">
             <select value={shelf} onChange={(event) => this.handleChange(book,event.target.value)}>
               <option value="none" disabled>Move to...</option>
@@ -29,7 +33,7 @@ class ShowBook extends Component {
           </div>
         </div>
         <div className="book-title">{book.title}</div>
-        <div className="book-authors">{book.authors.join(', ')}</div>
+        <div className="book-authors">{authors}</div>
       </div>
     )
   }

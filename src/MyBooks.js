@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import ShowBook from './ShowBook'
 import PropTypes from 'prop-types'
+import sortBy from 'sort-by'
 
 class MyBooks extends Component {
   static propTypes = {
+    onSwitchShelf: PropTypes.func.isRequired,
     books: PropTypes.array.isRequired,
     shelfs: PropTypes.object.isRequired
   }
@@ -48,7 +50,7 @@ class MyBooks extends Component {
                 <ol className="books-grid">
                   {books.filter((b) => {
                     return (s.books.indexOf(b.id) > -1)
-                  }).map((book) => (
+                  }).sort(sortBy('title')).map((book) => (
                     <li key={book.id}>
                       <ShowBook
                         onHandleChange={(book,shelf) => {
