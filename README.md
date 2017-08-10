@@ -1,3 +1,6 @@
+# MyReads
+App for Udacitys React Nanodegree
+
 ## Installation
 You need [npm](https://nodejs.org/) or [yarn](https://yarnpkg.com/) on your machine. Simply clone this project with [git](https://git-scm.com/) or download it as a ZIP. From the projects root directory call `npm install` and `npm run start` or with yarn its just `yarn` and `yarn start`.
 That's it!
