@@ -45,7 +45,7 @@ class MyBooks extends Component {
           <div>
           {shelfsMeta.map((s,i) => (
             <div className="bookshelf" key={i}>
-              <h2 className="bookshelf-title">{s.label}</h2>
+              <h2 className="bookshelf-title">{s.label} ({s.books.length})</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
                   {books.filter((b) => {
