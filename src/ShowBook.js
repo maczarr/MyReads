@@ -8,6 +8,7 @@ class ShowBook extends Component {
     shelf: PropTypes.string.isRequired
   }
 
+  // Function for handling a book switching shelfs
   handleChange = (book,shelf) => {
     this.props.onHandleChange(book,shelf)
   }
@@ -15,9 +16,14 @@ class ShowBook extends Component {
   render() {
     const { book, shelf } = this.props
 
+    /*
+     * Because some books don't have thumbnails or authors or sometimes
+     * they have more than one author, this gets checked here.
+     */
     const bookImage = book.imageLinks ? book.imageLinks.thumbnail : ''
     const authors   = book.authors ? book.authors.join(', ') : ''
 
+    // The HTML for a single book gets built and the shelf gets set
     return (
       <div className="book">
         <div className="book-top">

@@ -11,6 +11,7 @@ class MyBooks extends Component {
     shelfs: PropTypes.object.isRequired
   }
 
+  // Function for handling a book switching shelfs
   handleChange = (book,shelf) => {
     this.props.onSwitchShelf(book,shelf)
   }
@@ -18,6 +19,10 @@ class MyBooks extends Component {
   render() {
     const { books, shelfs } = this.props
 
+    /*
+     * Collecting all data about shelfs so there is no need to repeat
+     * HTML for building the shelfs
+     */
     const shelfsMeta = [
       {
         "label" : "Currently Reading",
@@ -43,11 +48,22 @@ class MyBooks extends Component {
         </div>
         <div className="list-books-content">
           <div>
+          {/* These iterations are used to build the three shelfs */}
           {shelfsMeta.map((s,i) => (
             <div className="bookshelf" key={i}>
               <h2 className="bookshelf-title">{s.label} ({s.books.length})</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
+                  {/*
+                    * The books get filtered so only the books in this shelf
+                    * are left. After that the resulting books are getting
+                    * sorted by title so they are everytime in the same order.
+                    * Last step is an interation over the sorted books where
+                    * every book gets handed over to the ShowBook-Component,
+                    * which needs a function for handling books switching shelf,
+                    * the book itself and the shelf it is in, so the dropdown
+                    * can show the correct current shelf.
+                    */}
                   {books.filter((b) => {
                     return (s.books.indexOf(b.id) > -1)
                   }).sort(sortBy('title')).map((book) => (

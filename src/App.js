@@ -16,6 +16,11 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
+    /*
+     * Filling the state variables with initial data from the API
+     * The shelfs get constructed in this exact way because it's the same
+     * format as the API-response after updating a book.
+     */
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
       this.setState({
@@ -28,6 +33,20 @@ class BooksApp extends React.Component {
     })
   }
 
+  /*
+   * This function handles all interactions with books:
+   * - Book switches from one shelf to another
+   * - Book gets added to a shelf after search
+   * - Book gets removed from a shelf (and not added to another one)
+   *
+   * After the API-Update-Call worked the state gets updated with the
+   * new responded shelfs-Object.
+   * If the shelf was removed ('none') the 'books'-state gets updated.
+   * If the book was added to a shelf it's getting checked if the book
+   * was in library before (book switched shelfs) or if it is new to the
+   * users library so the 'books'-state needs to be updated and the book
+   * gets added.
+   */
   switchShelf(book,shelf) {
     BooksAPI.update(book,shelf).then((shelfs) => {
       this.setState({ shelfs })
@@ -48,6 +67,7 @@ class BooksApp extends React.Component {
     })
   }
 
+  // The two possible sites are getting configured with routes
   render() {
     return (
       <div className="app">

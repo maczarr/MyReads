@@ -15,28 +15,40 @@ class SearchBooks extends Component {
     listOfBooks: []
   }
 
+  // Function for handling a book switching shelfs
   handleChange = (book,shelf) => {
     this.props.onSwitchShelf(book,shelf)
   }
 
+  // Clearing the list of books, e.g. when none was found
   clearBookList() {
     this.setState({ listOfBooks: [] })
   }
 
+  /*
+   * Function handling all search-interactions
+   *
+   * If the search query is empty no search will be triggered and the list of
+   * books will be cleared.
+   *
+   * Is there a valid query the BooksAPI gets called and the result updates
+   * the 'listOfBooks'-state or when an error gets responded list of books
+   * will be cleared.
+   */
   handleSearch = (query) => {
-    if(query.length > 0) {
-      BooksAPI.search(query,20).then((listOfBooks) => {
-        if(!listOfBooks.error) {
-          this.setState({ listOfBooks })
-        }
-        else {
-          this.clearBookList();
-        }
-      })
-    }
-    else {
+    if(query.length === 0) {
       this.clearBookList();
+      return;
     }
+
+    BooksAPI.search(query,20).then((listOfBooks) => {
+      if(listOfBooks.error) {
+        this.clearBookList();
+        return;
+      }
+
+      this.setState({ listOfBooks })
+    })
   }
 
   render() {
@@ -55,6 +67,13 @@ class SearchBooks extends Component {
             />
           </div>
         </div>
+        {/*
+          * The list of books are getting sorted by title so they're everytime
+          * in the same order.
+          * For each book the ShowBook-Component is getting used. To handle over
+          * the correct shelf the book is in (users library) the shelfs are
+          * getting searched if the book.id is already there.
+          */}
         <div className="search-books-results">
           <ol className="books-grid">
             {listOfBooks.sort(sortBy('title')).map((book) => (
