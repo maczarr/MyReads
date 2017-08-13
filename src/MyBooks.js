@@ -58,7 +58,7 @@ class MyBooks extends Component {
                     * The books get filtered so only the books in this shelf
                     * are left. After that the resulting books are getting
                     * sorted by title so they are everytime in the same order.
-                    * Last step is an interation over the sorted books where
+                    * Last step is an iteration over the sorted books where
                     * every book gets handed over to the ShowBook-Component,
                     * which needs a function for handling books switching shelf,
                     * the book itself and the shelf it is in, so the dropdown
