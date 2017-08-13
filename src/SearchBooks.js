@@ -8,14 +8,14 @@ import sortBy from 'sort-by'
 class SearchBooks extends Component {
   static propTypes = {
     onSwitchShelf: PropTypes.func.isRequired,
-    shelfs: PropTypes.object.isRequired
+    shelves: PropTypes.object.isRequired
   }
 
   state = {
     listOfBooks: []
   }
 
-  // Function for handling a book switching shelfs
+  // Function for handling a book switching shelves
   handleChange = (book,shelf) => {
     this.props.onSwitchShelf(book,shelf)
   }
@@ -53,7 +53,7 @@ class SearchBooks extends Component {
 
   render() {
     const { listOfBooks } = this.state
-    const { shelfs } = this.props
+    const { shelves } = this.props
 
     return (
       <div className="search-books">
@@ -71,7 +71,7 @@ class SearchBooks extends Component {
           * The list of books are getting sorted by title so they're everytime
           * in the same order.
           * For each book the ShowBook-Component is getting used. To handle over
-          * the correct shelf the book is in (users library) the shelfs are
+          * the correct shelf the book is in (users library) the shelves are
           * getting searched if the book.id is already there.
           */}
         <div className="search-books-results">
@@ -84,9 +84,9 @@ class SearchBooks extends Component {
                   }}
                   book={book}
                   shelf={((book) => {
-                    if(shelfs.currentlyReading.indexOf(book.id) > -1) return 'currentlyReading'
-                    if(shelfs.wantToRead.indexOf(book.id) > -1) return 'wantToRead'
-                    if(shelfs.read.indexOf(book.id) > -1) return 'read'
+                    if(shelves.currentlyReading.indexOf(book.id) > -1) return 'currentlyReading'
+                    if(shelves.wantToRead.indexOf(book.id) > -1) return 'wantToRead'
+                    if(shelves.read.indexOf(book.id) > -1) return 'read'
                     return 'none'
                   })(book)}
                 />

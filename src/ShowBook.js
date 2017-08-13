@@ -8,7 +8,7 @@ class ShowBook extends Component {
     shelf: PropTypes.string.isRequired
   }
 
-  // Function for handling a book switching shelfs
+  // Function for handling a book switching shelves
   handleChange = (book,shelf) => {
     this.props.onHandleChange(book,shelf)
   }

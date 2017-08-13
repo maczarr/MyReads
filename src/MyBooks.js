@@ -8,36 +8,36 @@ class MyBooks extends Component {
   static propTypes = {
     onSwitchShelf: PropTypes.func.isRequired,
     books: PropTypes.array.isRequired,
-    shelfs: PropTypes.object.isRequired
+    shelves: PropTypes.object.isRequired
   }
 
-  // Function for handling a book switching shelfs
+  // Function for handling a book switching shelves
   handleChange = (book,shelf) => {
     this.props.onSwitchShelf(book,shelf)
   }
 
   render() {
-    const { books, shelfs } = this.props
+    const { books, shelves } = this.props
 
     /*
-     * Collecting all data about shelfs so there is no need to repeat
-     * HTML for building the shelfs
+     * Collecting all data about shelves so there is no need to repeat
+     * HTML for building the shelves
      */
-    const shelfsMeta = [
+    const shelvesMeta = [
       {
         "label" : "Currently Reading",
         "shelf" : "currentlyReading",
-        "books" : shelfs.currentlyReading
+        "books" : shelves.currentlyReading
       },
       {
         "label" : "Want To Read",
         "shelf" : "wantToRead",
-        "books" : shelfs.wantToRead
+        "books" : shelves.wantToRead
       },
       {
         "label" : "Read",
         "shelf" : "read",
-        "books" : shelfs.read
+        "books" : shelves.read
       }
     ]
 
@@ -48,8 +48,8 @@ class MyBooks extends Component {
         </div>
         <div className="list-books-content">
           <div>
-          {/* These iterations are used to build the three shelfs */}
-          {shelfsMeta.map((s,i) => (
+          {/* These iterations are used to build the three shelves */}
+          {shelvesMeta.map((s,i) => (
             <div className="bookshelf" key={i}>
               <h2 className="bookshelf-title">{s.label} ({s.books.length})</h2>
               <div className="bookshelf-books">

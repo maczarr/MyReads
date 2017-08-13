@@ -8,7 +8,7 @@ import './App.css'
 class BooksApp extends React.Component {
   state = {
     books : [],
-    shelfs : {
+    shelves : {
       "currentlyReading": [],
       "wantToRead"      : [],
       "read"            : []
@@ -18,13 +18,13 @@ class BooksApp extends React.Component {
   componentDidMount() {
     /*
      * Filling the state variables with initial data from the API
-     * The shelfs get constructed in this exact way because it's the same
+     * The shelves get constructed in this exact way because it's the same
      * format as the API-response after updating a book.
      */
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
       this.setState({
-        shelfs : {
+        shelves : {
           "currentlyReading": books.filter((book) => book.shelf === 'currentlyReading').map((book) => book.id),
           "wantToRead"      : books.filter((book) => book.shelf === 'wantToRead').map((book) => book.id),
           "read"            : books.filter((book) => book.shelf === 'read').map((book) => book.id)
@@ -40,16 +40,16 @@ class BooksApp extends React.Component {
    * - Book gets removed from a shelf (and not added to another one)
    *
    * After the API-Update-Call worked the state gets updated with the
-   * new responded shelfs-Object.
+   * new responded shelves-Object.
    * If the shelf was removed ('none') the 'books'-state gets updated.
    * If the book was added to a shelf it's getting checked if the book
-   * was in library before (book switched shelfs) or if it is new to the
+   * was in library before (book switched shelves) or if it is new to the
    * users library so the 'books'-state needs to be updated and the book
    * gets added.
    */
   switchShelf(book,shelf) {
-    BooksAPI.update(book,shelf).then((shelfs) => {
-      this.setState({ shelfs })
+    BooksAPI.update(book,shelf).then((shelves) => {
+      this.setState({ shelves })
 
       if(shelf === 'none') {
         this.setState((state) => ({
@@ -77,7 +77,7 @@ class BooksApp extends React.Component {
               this.switchShelf(book,shelf)
             }}
             books={this.state.books}
-            shelfs={this.state.shelfs}
+            shelves={this.state.shelves}
           />
         )}/>
 
@@ -86,7 +86,7 @@ class BooksApp extends React.Component {
             onSwitchShelf={(book,shelf) => {
               this.switchShelf(book,shelf)
             }}
-            shelfs={this.state.shelfs}
+            shelves={this.state.shelves}
           />
         )}/>
       </div>
